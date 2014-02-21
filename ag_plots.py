@@ -108,7 +108,11 @@ def make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
 
 def make_pie_chart(collapsed_taxa_table, colors):
     fractions = [ 100*x for x in collapsed_taxa_table.mean(axis=1) ] 
-    plt.pie(fractions, colors=colors)
+    wedges, texts = plt.pie(fractions, colors=colors)
+    
+    for w in wedges:
+        w.set_linewidth(0)
+
     plt.axis('equal')
     plt.show()
 
