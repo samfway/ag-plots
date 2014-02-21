@@ -25,7 +25,7 @@ def interface():
     args = args.parse_args()
     return args
 
-def get_simple_taxa_summary(mapping_file, taxa_summary_file, metadata_category, \
+def get_filtered_taxa_summary(mapping_file, taxa_summary_file, metadata_category, \
     metadata_value, top_n_taxa=7, select_taxa=None): 
     """ Get a simplified taxonomy table. 
 
@@ -149,7 +149,7 @@ if __name__=="__main__":
         'Verrucomicrobia', 'Actinobacteria', 'Tenericutes', 'Cyanobacteria']
 
     filtered_sample_ids, taxa_labels, collapsed_taxa_table = \
-        get_simple_taxa_summary(args.mapping_file, args.taxa_file, \
+        get_filtered_taxa_summary(args.mapping_file, args.taxa_file, \
         args.metadata_category, args.metadata_value, select_taxa=select_taxa)
 
     colors = brewer2mpl.get_map('Spectral', 'Diverging', len(taxa_labels)).mpl_colors
