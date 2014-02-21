@@ -13,6 +13,7 @@ import argparse
 from numpy import asarray, array, zeros, argsort, cumsum, arange
 from qiime.parse import parse_mapping_file_to_dict, parse_taxa_summary_table
 import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
 import brewer2mpl
 
 def interface():
@@ -139,11 +140,14 @@ def make_legend(taxa_labels, colors):
         and saves its legend as a separate figure
     """ 
     fig = plt.figure()
-    seperate_legend = plt.figure(figsize=(2,3))
+    font_prop = FontProperties()
+    font_prop.set_size('xx-large')
+    font_prop.set_family('sans-serif')
+    seperate_legend = plt.figure(figsize=(3,3.5))
     ax = fig.add_subplot(111)
     N = len(taxa_labels)
     wedges, texts = ax.pie([100/N]*N, colors=colors)   
-    seperate_legend.legend(wedges, taxa_labels, 'center')
+    seperate_legend.legend(wedges, taxa_labels, 'center', prop=font_prop, frameon=False)
     seperate_legend.show()
     plt.show()
 
