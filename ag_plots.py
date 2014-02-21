@@ -136,6 +136,7 @@ def make_pie_chart(collapsed_taxa_table, colors):
 if __name__=="__main__":
     args = interface() 
 
+    # Sample ticks to be labeled in the stack plot
     special_labels = [ \
         ('000007120.1075677', 'Michael Pollan'), \
         ('000007108.1075657', 'Michael Pollan pre'), \
@@ -143,6 +144,7 @@ if __name__=="__main__":
         ('000007077.1075690', 'Jeff Leach'), \
         ('000007127.1075706', 'Shannon Ford') ]
 
+    # Specify taxa, otherwise the top N most abundant 
     select_taxa = ['Firmicutes', 'Bacteroidetes', 'Proteobacteria', \
         'Verrucomicrobia', 'Actinobacteria', 'Tenericutes', 'Cyanobacteria']
 
