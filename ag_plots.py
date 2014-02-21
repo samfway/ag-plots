@@ -52,6 +52,11 @@ def get_filtered_taxa_summary(mapping_file, taxa_summary_file, metadata_category
 
     selected_ids = [ key for key in mapping_dict.keys() if \
         mapping_dict[key][metadata_category] == metadata_value ] 
+
+    if len(selected_ids) < 1: 
+        raise ValueError('No sample ids match metadata_value="%s" in metadata_category="%s"' \
+            % (metadata_value, metadata_category))
+
     sample_id_indices = [ i for i in xrange(len(sample_ids)) if sample_ids[i] in selected_ids ] 
     filtered_taxa_table = taxa_table[:, sample_id_indices]
     filtered_sample_ids = [ sample_ids[idx] for idx in sample_id_indices ]
