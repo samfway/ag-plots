@@ -27,6 +27,21 @@ def interface():
 
 def get_simple_taxa_summary(mapping_file, taxa_summary_file, metadata_category, \
     metadata_value, top_n_taxa=7, select_taxa=None): 
+    """ Get a simplified taxonomy table. 
+
+        Inputs:
+        mapping_file - Input mapping file (sample ids match taxa file)
+        taxa_summary_file - Taxonomy summary file 
+        metadata_category - Used to select specific samples from the taxa file
+        metadata_value - Value used to select specific samples from the taxa file
+        top_n_taxa - If taxonomy groups aren't specified use the top N most abundant
+        select_taxa - List of desired taxonomic groups
+
+        Outputs:
+        filtered_sample_ids - selected sample ids
+        taxa_labels - taxonomic labels (including "Other")
+        collapsed_taxa_table - simplified taxonomy table 
+    """ 
 
     mapping_fp = open(mapping_file, 'rU')
     mapping_dict, comments = parse_mapping_file_to_dict(mapping_fp)
@@ -73,6 +88,7 @@ def get_simple_taxa_summary(mapping_file, taxa_summary_file, metadata_category, 
 
 def make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
     ylabel, colors, sample_ticks=None):
+    """ Create a stacked plot. """ 
     N = len(taxa_labels)
     M = collapsed_taxa_table.shape[1]
     x = arange(M)
@@ -107,6 +123,7 @@ def make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
     plt.show()
 
 def make_pie_chart(collapsed_taxa_table, colors):
+    """ Create a simple pie chart """ 
     fractions = [ 100*x for x in collapsed_taxa_table.mean(axis=1) ] 
     wedges, texts = plt.pie(fractions, colors=colors)
     
