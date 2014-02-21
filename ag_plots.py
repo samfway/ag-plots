@@ -133,6 +133,20 @@ def make_pie_chart(collapsed_taxa_table, colors):
     plt.axis('equal')
     plt.show()
 
+def make_legend(taxa_labels, colors):
+    """ Hack to generate a separate legend image
+        Creates a garbage pie chart (pretty, though)
+        and saves its legend as a separate figure
+    """ 
+    fig = plt.figure()
+    seperate_legend = plt.figure(figsize=(2,3))
+    ax = fig.add_subplot(111)
+    N = len(taxa_labels)
+    wedges, texts = ax.pie([100/N]*N, colors=colors)   
+    seperate_legend.legend(wedges, taxa_labels, 'center')
+    seperate_legend.show()
+    plt.show()
+
 if __name__=="__main__":
     args = interface() 
 
@@ -157,5 +171,7 @@ if __name__=="__main__":
     make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
         args.ylabel, colors, sample_ticks=special_labels)
 
-    make_pie_chart(collapsed_taxa_table, colors)
+    wedges = make_pie_chart(collapsed_taxa_table, colors)
+    
+    make_legend(taxa_labels, colors) 
         
