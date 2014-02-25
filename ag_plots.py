@@ -20,6 +20,8 @@ def interface():
     args = argparse.ArgumentParser() 
     args.add_argument('-m', '--mapping-file', help='Mapping file', required=True)
     args.add_argument('-t', '--taxa-file', help='Taxa summary file', required=True)
+    args.add_argument('-o', '--output-prefix', help='Output file prefix', default='./out')
+    args.add_argument('-f', '--output-type', help='Output file type', default='pdf')
     args.add_argument('-c', '--metadata-category', help='Metadata category', default='SIMPLE_MATTER')
     args.add_argument('-v', '--metadata-value', help='Specific metadata value', default=None)
     args.add_argument('-l', '--ylabel', help='Y-axis label', default='Phylum')
@@ -92,8 +94,8 @@ def get_filtered_taxa_summary(mapping_file, taxa_summary_file, metadata_category
 
     return filtered_sample_ids, taxa_labels, collapsed_taxa_table 
 
-def make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
-    ylabel, colors, sample_ticks=None):
+def make_stacked_plot(output_file, filtered_sample_ids, taxa_labels, \
+    collapsed_taxa_table, ylabel, colors, sample_ticks=None):
     """ Create a stacked plot. """ 
     N = len(taxa_labels)
     M = collapsed_taxa_table.shape[1]
@@ -126,20 +128,21 @@ def make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
     plt.ylim([0,1])
     plt.xlim([1,M])
     plt.subplots_adjust(bottom=0.25)
-    plt.show()
+    plt.savefig(output_file)
 
-def make_pie_chart(collapsed_taxa_table, colors):
+def make_pie_chart(output_file, collapsed_taxa_table, colors):
     """ Create a simple pie chart """ 
     fractions = [ 100*x for x in collapsed_taxa_table.mean(axis=1) ] 
+    fig = plt.figure()
     wedges, texts = plt.pie(fractions, colors=colors)
     
     for w in wedges:
         w.set_linewidth(0)
 
     plt.axis('equal')
-    plt.show()
+    plt.savefig(output_file)
 
-def make_legend(taxa_labels, colors):
+def make_legend(output_file, taxa_labels, colors):
     """ Hack to generate a separate legend image
         Creates a garbage pie chart (pretty, though)
         and saves its legend as a separate figure
@@ -154,7 +157,7 @@ def make_legend(taxa_labels, colors):
     wedges, texts = ax.pie([100/N]*N, colors=colors)   
     seperate_legend.legend(wedges, taxa_labels, 'center', prop=font_prop, frameon=False)
     seperate_legend.show()
-    plt.show()
+    plt.savefig(output_file)
 
 if __name__=="__main__":
     args = interface() 
@@ -177,10 +180,16 @@ if __name__=="__main__":
 
     colors = brewer2mpl.get_map('Spectral', 'Diverging', len(taxa_labels)).mpl_colors
 
-    make_stacked_plot(filtered_sample_ids, taxa_labels, collapsed_taxa_table, \
-        args.ylabel, colors, sample_ticks=special_labels)
+    # Create stack plot
+    output = args.output_prefix + 'stack.' + args.output_type
+    make_stacked_plot(output, filtered_sample_ids, taxa_labels, \
+        collapsed_taxa_table, args.ylabel, colors, sample_ticks=special_labels)
 
-    wedges = make_pie_chart(collapsed_taxa_table, colors)
+    # Create pie chart
+    output = args.output_prefix + 'pie.' + args.output_type
+    make_pie_chart(output, collapsed_taxa_table, colors)
     
-    make_legend(taxa_labels, colors) 
+    # Create figure legend 
+    output = args.output_prefix + 'legend.' + args.output_type
+    make_legend(output, taxa_labels, colors) 
         
