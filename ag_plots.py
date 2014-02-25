@@ -54,7 +54,7 @@ def get_filtered_taxa_summary(mapping_file, taxa_summary_file, metadata_category
 
     selected_ids = [ key for key in mapping_dict.keys() if \
         mapping_dict[key][metadata_category] == metadata_value ] 
-
+    
     if len(selected_ids) < 1: 
         raise ValueError('No sample ids match metadata_value="%s" in metadata_category="%s"' \
             % (metadata_value, metadata_category))
@@ -109,9 +109,13 @@ def make_stacked_plot(output_file, filtered_sample_ids, taxa_labels, \
     xtick_labels = [] 
     if sample_ticks is not None:
         for sample_id, sample_label in sample_ticks:
-            sample_index = filtered_sample_ids.index(sample_id)
-            xticks.append(sample_index)
-            xtick_labels.append(sample_label)
+            if sample_id in filtered_sample_ids:
+                sample_index = filtered_sample_ids.index(sample_id)
+                xticks.append(sample_index)
+                xtick_labels.append(sample_label)
+            else:
+                print 'WARNING: sample id "%s" is not in the filtered dataset. ' % (sample_id)
+                print '  -->    "%s" will not appear in the labeled axis' % (sample_id)
 
     ax1.fill_between(x, 1, 1-cumulative[0,:], color=colors[0])
     for i in xrange(1,N):
