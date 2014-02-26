@@ -167,9 +167,10 @@ def get_sample_ids_to_label(samples_file):
     for line in open(samples_file, 'rU'):
         if line[0] == '#': 
             continue 
-        line_pieces = line.strip().split('\t')
+        line_pieces = [x.strip() for x in line.split('\t')]
         if len(line_pieces) == 2:
             sample_label_tuples.append(tuple(line_pieces[0:2]))
+
     return sample_label_tuples
 
 if __name__=="__main__":
