@@ -154,13 +154,12 @@ def make_legend(output_file, taxa_labels, colors):
     font_prop = FontProperties()
     font_prop.set_size('xx-large')
     font_prop.set_family('sans-serif')
-    seperate_legend = plt.figure(figsize=(3,3.5))
+    seperate_legend = plt.figure(figsize=(5,3.5))
     ax = fig.add_subplot(111)
     N = len(taxa_labels)
     wedges, texts = ax.pie([100/N]*N, colors=colors)   
     seperate_legend.legend(wedges, taxa_labels, 'center', prop=font_prop, frameon=False)
-    seperate_legend.show()
-    plt.savefig(output_file)
+    seperate_legend.savefig(output_file)
 
 def get_sample_ids_to_label(samples_file):
     """ Get sample id, label tuples to be highlighted """ 
@@ -175,14 +174,13 @@ def get_sample_ids_to_label(samples_file):
     return sample_label_tuples
 
 def get_key_taxa(key_taxa_file):
+    """ Load taxa to be plotted from file """ 
     key_taxa = []
     for line in open(key_taxa_file, 'rU'):
         line = line.strip()
         if line[0] == '#' or len(line) < 1:
             continue 
         key_taxa.append(line)
-    print key_taxa
-    exit()
     return key_taxa
 
 if __name__=="__main__":
@@ -218,4 +216,5 @@ if __name__=="__main__":
     # Create figure legend 
     output = args.output_prefix + 'legend.' + args.output_type
     make_legend(output, taxa_labels, colors) 
+    
         
