@@ -22,6 +22,7 @@ def interface():
     args.add_argument('-t', '--taxa-file', help='Taxa summary file', required=True)
     args.add_argument('-o', '--output-prefix', help='Output file prefix', default='./out')
     args.add_argument('-f', '--output-type', help='Output file type', default='pdf')
+    args.add_argument('-s', '--samples-file', help='Sample ids to be labeled')
     args.add_argument('-c', '--metadata-category', help='Metadata category', default='SIMPLE_MATTER')
     args.add_argument('-v', '--metadata-value', help='Specific metadata value', default=None)
     args.add_argument('-l', '--ylabel', help='Y-axis label', default='Phylum')
@@ -113,9 +114,6 @@ def make_stacked_plot(output_file, filtered_sample_ids, taxa_labels, \
                 sample_index = filtered_sample_ids.index(sample_id)
                 xticks.append(sample_index)
                 xtick_labels.append(sample_label)
-            else:
-                print 'WARNING: sample id "%s" is not in the filtered dataset. ' % (sample_id)
-                print '  -->    "%s" will not appear in the labeled axis' % (sample_id)
 
     ax1.fill_between(x, 1, 1-cumulative[0,:], color=colors[0])
     for i in xrange(1,N):
@@ -163,16 +161,25 @@ def make_legend(output_file, taxa_labels, colors):
     seperate_legend.show()
     plt.savefig(output_file)
 
+def get_sample_ids_to_label(samples_file):
+    """ Get sample id, label tuples to be highlighted """ 
+    sample_label_tuples = [] 
+    for line in open(samples_file, 'rU'):
+        if line[0] == '#': 
+            continue 
+        line_pieces = line.strip().split('\t')
+        if len(line_pieces) == 2:
+            sample_label_tuples.append(tuple(line_pieces[0:2]))
+    return sample_label_tuples
+
 if __name__=="__main__":
     args = interface() 
 
     # Sample ticks to be labeled in the stack plot
-    special_labels = [ \
-        ('000007120.1075677', 'Michael Pollan'), \
-        ('000007108.1075657', 'Michael Pollan pre'), \
-        ('000007118.1075682', 'Michael Pollan post'), \
-        ('000007077.1075690', 'Jeff Leach'), \
-        ('000007127.1075706', 'Shannon Ford') ]
+    if args.samples_file:
+        special_labels = get_sample_ids_to_label(args.samples_file)
+    else: 
+        special_labels = [] 
 
     # Specify taxa, otherwise the top N most abundant 
     select_taxa = ['Firmicutes', 'Bacteroidetes', 'Proteobacteria', \
