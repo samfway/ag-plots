@@ -20,6 +20,7 @@ def interface():
     args = argparse.ArgumentParser() 
     args.add_argument('-m', '--mapping-file', help='Mapping file', required=True)
     args.add_argument('-t', '--taxa-file', help='Taxa summary file', required=True)
+    args.add_argument('-k', '--key-taxa-file', help='List of taxa to examine', required=True)
     args.add_argument('-o', '--output-prefix', help='Output file prefix', default='./out')
     args.add_argument('-f', '--output-type', help='Output file type', default='pdf')
     args.add_argument('-s', '--samples-file', help='Sample ids to be labeled')
@@ -173,6 +174,17 @@ def get_sample_ids_to_label(samples_file):
 
     return sample_label_tuples
 
+def get_key_taxa(key_taxa_file):
+    key_taxa = []
+    for line in open(key_taxa_file, 'rU'):
+        line = line.strip()
+        if line[0] == '#' or len(line) < 1:
+            continue 
+        key_taxa.append(line)
+    print key_taxa
+    exit()
+    return key_taxa
+
 if __name__=="__main__":
     args = interface() 
 
@@ -183,8 +195,10 @@ if __name__=="__main__":
         special_labels = [] 
 
     # Specify taxa, otherwise the top N most abundant 
-    select_taxa = ['Firmicutes', 'Bacteroidetes', 'Proteobacteria', \
-        'Verrucomicrobia', 'Actinobacteria', 'Tenericutes', 'Cyanobacteria']
+    if args.key_taxa_file:
+        select_taxa = get_key_taxa(args.key_taxa_file)
+    else:
+        select_taxa = [] 
 
     filtered_sample_ids, taxa_labels, collapsed_taxa_table = \
         get_filtered_taxa_summary(args.mapping_file, args.taxa_file, \

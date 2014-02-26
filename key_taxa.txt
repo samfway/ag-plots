@@ -1,0 +1,8 @@
+# Taxa to be plotted
+Firmicutes
+Bacteroidetes
+Proteobacteria
+Verrucomicrobia
+Actinobacteria
+Tenericutes
+Cyanobacteria
