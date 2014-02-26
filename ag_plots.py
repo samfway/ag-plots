@@ -20,7 +20,7 @@ def interface():
     args = argparse.ArgumentParser() 
     args.add_argument('-m', '--mapping-file', help='Mapping file', required=True)
     args.add_argument('-t', '--taxa-file', help='Taxa summary file', required=True)
-    args.add_argument('-k', '--key-taxa-file', help='List of taxa to examine', required=True)
+    args.add_argument('-k', '--key-taxa-file', help='List of taxa to examine')
     args.add_argument('-o', '--output-prefix', help='Output file prefix', default='./out')
     args.add_argument('-f', '--output-type', help='Output file type', default='pdf')
     args.add_argument('-s', '--samples-file', help='Sample ids to be labeled')
@@ -143,7 +143,7 @@ def make_pie_chart(output_file, collapsed_taxa_table, colors):
         w.set_linewidth(0)
 
     plt.axis('equal')
-    plt.savefig(output_file)
+    plt.savefig(output_file, bbox_inches='tight')
 
 def make_legend(output_file, taxa_labels, colors):
     """ Hack to generate a separate legend image
@@ -196,7 +196,7 @@ if __name__=="__main__":
     if args.key_taxa_file:
         select_taxa = get_key_taxa(args.key_taxa_file)
     else:
-        select_taxa = [] 
+        select_taxa = None
 
     filtered_sample_ids, taxa_labels, collapsed_taxa_table = \
         get_filtered_taxa_summary(args.mapping_file, args.taxa_file, \
