@@ -8,5 +8,3 @@ __version__ = "unversioned"
 __maintainer__ = "Sam Way"
 __email__ = "samuel.way@colorado.edu"
 
-__all__ = ['mapping_file'] 
-
