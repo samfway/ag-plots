@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
 __author__ = "Sam Way"
-__copyright__ = "Copyright 2011, The QIIME Project"
-__credits__ = ["Sam Way", "Rob Knight"] 
-__license__ = "GPL"
-__version__ = "1.7.0-dev"
+__copyright__ = "Copyright 2013, The American Gut Project"
+__credits__ = ["Sam Way"]
+__license__ = "BSD" 
+__version__ = "unversioned"
 __maintainer__ = "Sam Way"
-__email__ = "samfway@gmail.com"
-__status__ = "Development"
+__email__ = "samuel.way@colorado.edu"
 
 import argparse
 from numpy import asarray, array, zeros, argsort, cumsum, arange
