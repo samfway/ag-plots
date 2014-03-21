@@ -7,4 +7,3 @@ k__Bacteria; p__Verrucomicrobia	0.14	0.12
 k__Bacteria; p__Actinobacteria	0.15	0.11
 k__Bacteria; p__Tenericutes	0.16	0.10
 k__Bacteria; p__Cyanobacteria	0.09	0.09
-

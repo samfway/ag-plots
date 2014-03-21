@@ -11,7 +11,7 @@ __email__ = "samuel.way@colorado.edu"
 import argparse
 import brewer2mpl
 import matplotlib.pyplot as plt
-from lib.parse import parse_mapping_file_to_dict, get_filtered_taxa_summary
+from agplots.lib.parse import parse_mapping_file_to_dict, get_filtered_taxa_summary
 from numpy import array, cumsum, arange
 from matplotlib.font_manager import FontProperties
 
